@@ -4,17 +4,17 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function DataBaby(props) {
   const [data, setData] = useState(props.mask);
 
-  useEffect(()=>{
-    async function init(){
-      try{
-        const dataBaby = await AsyncStorage.getItem('dataBaby');
-        setData(JSON.parse(dataBaby));
-      }catch(e){
+  useEffect(() => {
+    async function init() {
+      try {
+        //const dataBaby = await AsyncStorage.getItem('dataBaby');
+        //setData(JSON.parse(dataBaby));
+      } catch (e) {
         console.warn(e)
       }
     }
     init();
-  },[setData]);
+  }, [setData]);
 
   return (
     <View style={styles.container}>
@@ -40,23 +40,64 @@ export default function DataBaby(props) {
   }
   function componentName() {
     return (
-      <View style={{ width: '60%',padding:2 }}>
+      <View style={{ width: '60%', padding: 2 }}>
         <Text style={styles.textLabe}>Nome:</Text>
-        <Text style={styles.textData}>{data.name}</Text>
+        <Text style={styles.textData}>{data.name || ""}</Text>
       </View>
     );
   }
   function componentAge() {
     return (
-      <View style={{ width: '25%',padding:2,borderColor:'#330066',borderWidth:1,backgroundColor:"#7851a9"}}>
+      <View> 
+        <View style={{ alignItems:'center',justifyContent: 'center',width: 40, height: 40, borderRadius: 20, padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
+          <Text style={styles.textData}>{data.age}</Text>
+        </View >
         <Text style={styles.textLabe}>Idade:</Text>
+      </View>
+    );
+  }
+  function componentWeight() {
+    return (
+      <View> 
+        <View style={{ alignItems:'center',justifyContent: 'center',width: 40, height: 40, borderRadius: 20, padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
+          <Text style={styles.textData}>{data.age}</Text>
+        </View >
+        <Text style={styles.textLabe}>Idade:</Text>
+      </View>
+    );
+  }
+  function componentVariation() {
+    return (
+      <View> 
+        <View style={{ alignItems:'center',justifyContent: 'center',width: 40, height: 40, borderRadius: 20, padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
+          <Text style={styles.textData}>{data.age}</Text>
+        </View >
+        <Text style={styles.textLabe}>Idade:</Text>
+      </View>
+    );
+  }
+  function componentHeightBaby() {
+    return (
+      <View> 
+        <View style={{ alignItems:'center',justifyContent: 'center',width: 40, height: 40, borderRadius: 20, padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
+          <Text style={styles.textData}>{data.age}</Text>
+        </View >
+        <Text style={styles.textLabe}>Idade:</Text>
+      </View>
+    );
+  }
+
+  /*function componentAge() {
+    return (
+      <View style={{ width: '25%',padding:2,borderColor:'#330066',borderWidth:1,backgroundColor:"#7851a9"}}>
         <Text style={styles.textData}>{data.age}</Text>
+        <Text style={styles.textLabe}>Idade:</Text>
       </View >
     );
   }
   function componentWeight() {
     return (
-      <View style={{ width: '25%',padding:2,borderColor:'#330066',borderWidth:1,backgroundColor:"#7851a9"}}>
+      <View style={{ width: '25%', padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
         <Text style={styles.textLabe}>Peso:</Text>
         <Text style={styles.textData}>{data.weight}</Text>
       </View>
@@ -64,7 +105,7 @@ export default function DataBaby(props) {
   }
   function componentVariation() {
     return (
-      <View style={{ width: '25%',padding:2,borderColor:'#330066',borderWidth:1,backgroundColor:"#7851a9"}}>
+      <View style={{ width: '25%', padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
         <Text style={styles.textLabe}>Variação:</Text>
         <Text style={styles.textData}>{data.variation}</Text>
       </View>
@@ -72,12 +113,12 @@ export default function DataBaby(props) {
   }
   function componentHeightBaby() {
     return (
-      <View style={{ width: '25%',padding:2,borderColor:'#330066',borderWidth:1,backgroundColor:"#7851a9"}}>
+      <View style={{ width: '25%', padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
         <Text style={styles.textLabe}>Altura:</Text>
         <Text style={styles.textData}>{data.heightBaby}</Text>
       </View>
     );
-  }
+  }*/
 }
 
 const styles = StyleSheet.create({
@@ -89,16 +130,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   subDiv: {
-    display: 'flex', 
-    flexDirection: 'row', 
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  textLabe:{
-    fontWeight:'bold',
-    fontStyle:'italic',
-    color:'white',
+  textLabe: {
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    color: 'white',
   },
-  textData:{
-    color:'white',
+  textData: {
+    color: 'white',
   }
 })

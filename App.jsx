@@ -28,11 +28,11 @@ export default function App() {
     milk: ""
   };
   const mask = {
-    name: "",
-    age: "",
-    weight: "",
-    variation: "",
-    heightBaby: ""
+    name: "Aurora Alves Bueno",
+    age: "0",
+    weight: "2.500",
+    variation: "0.300",
+    heightBaby: "0.49"
   };
   useEffect(()=>{
     async function init(){

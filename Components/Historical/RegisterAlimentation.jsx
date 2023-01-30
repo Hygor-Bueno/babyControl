@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingBottom: 4,
         justifyContent: 'space-between',
+        marginTop:10
     },
     viewFooter: {
         alignItems: 'center',
