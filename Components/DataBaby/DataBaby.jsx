@@ -1,25 +1,30 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { maskWeight, weightMask } from '../Util';
 export default function DataBaby(props) {
   const [data, setData] = useState(props.mask);
 
   useEffect(() => {
     async function init() {
       try {
-        //const dataBaby = await AsyncStorage.getItem('dataBaby');
-        //setData(JSON.parse(dataBaby));
+        const dataBaby = await AsyncStorage.getItem('dataBaby');
+        setData(JSON.parse(dataBaby));
+        console.log(dataBaby);
       } catch (e) {
         console.warn(e)
       }
     }
     init();
   }, [setData]);
-
+  useEffect(() => console.log(data), [data]);
   return (
     <View style={styles.container}>
-      <View style={styles.subDiv}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         {componentName()}
+        <TouchableOpacity onPress={() => { console.log("HIHIHIHI") }} style={{ backgroundColor: "#7851a9", alignItems: 'center', justifyContent: 'center', height: 30, width: 30, borderRadius: 15 }}>
+          <Image source={require('../../Assets/Image/settings.png')} style={{ height: 28, width: 28 }} />
+        </TouchableOpacity>
       </View>
       <View style={styles.subDiv}>
         {componentAge()}
@@ -29,28 +34,30 @@ export default function DataBaby(props) {
       </View>
     </View>
   );
-  function Age() {
-    let dateCurrent = new Date();
-    let DateBirth = new Date();
-    let age = dateCurrent.getFullYear() - DateBirth.getFullYear();
-    if (dateCurrent.getMonth() < DateBirth.getMonth() || (dateCurrent.getMonth() == DateBirth.getMonth() && dateCurrent.getDay() < DateBirth.getDay())) {
-      age--;
+  function Age(value) {
+    if (value) {
+      let dateCurrent = new Date();
+      let DateBirth = new Date(value);
+      let age = dateCurrent.getFullYear() - DateBirth.getFullYear();
+      if (dateCurrent.getMonth() < DateBirth.getMonth() || (dateCurrent.getMonth() == DateBirth.getMonth() && dateCurrent.getDay() < DateBirth.getDay())) {
+        age--;
+      }
+      return age;
     }
-    return age;
   }
   function componentName() {
     return (
       <View style={{ width: '60%', padding: 2 }}>
         <Text style={styles.textLabe}>Nome:</Text>
-        <Text style={styles.textData}>{data.name || ""}</Text>
+        <Text style={styles.textData}>{data ? data.name : ""}</Text>
       </View>
     );
   }
   function componentAge() {
     return (
-      <View> 
-        <View style={{ alignItems:'center',justifyContent: 'center',width: 40, height: 40, borderRadius: 20, padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
-          <Text style={styles.textData}>{data.age}</Text>
+      <View style={styles.componentView}>
+        <View style={styles.infoBaby}>
+          <Text style={styles.textData}>{data ? Age(data.birth) : ""}</Text>
         </View >
         <Text style={styles.textLabe}>Idade:</Text>
       </View>
@@ -58,31 +65,31 @@ export default function DataBaby(props) {
   }
   function componentWeight() {
     return (
-      <View> 
-        <View style={{ alignItems:'center',justifyContent: 'center',width: 40, height: 40, borderRadius: 20, padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
-          <Text style={styles.textData}>{data.age}</Text>
+      <View style={styles.componentView}>
+        <View style={styles.infoBaby}>
+          <Text style={styles.textData}>{data ? weightMask(data.weight) : ""}</Text>
         </View >
-        <Text style={styles.textLabe}>Idade:</Text>
+        <Text style={styles.textLabe}>Peso (Kg):</Text>
       </View>
     );
   }
   function componentVariation() {
     return (
-      <View> 
-        <View style={{ alignItems:'center',justifyContent: 'center',width: 40, height: 40, borderRadius: 20, padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
-          <Text style={styles.textData}>{data.age}</Text>
+      <View style={styles.componentView}>
+        <View style={styles.infoBaby}>
+          <Text style={{ ...styles.textData, fontSize: 18 }}>{data ? data.sex : ""}</Text>
         </View >
-        <Text style={styles.textLabe}>Idade:</Text>
+        <Text style={styles.textLabe}>Sexo:</Text>
       </View>
     );
   }
   function componentHeightBaby() {
     return (
-      <View> 
-        <View style={{ alignItems:'center',justifyContent: 'center',width: 40, height: 40, borderRadius: 20, padding: 2, borderColor: '#330066', borderWidth: 1, backgroundColor: "#7851a9" }}>
-          <Text style={styles.textData}>{data.age}</Text>
+      <View style={styles.componentView}>
+        <View style={styles.infoBaby}>
+          <Text style={styles.textData}>{data ? data.heightBaby : ""}</Text>
         </View >
-        <Text style={styles.textLabe}>Idade:</Text>
+        <Text style={styles.textLabe}>Altura:</Text>
       </View>
     );
   }
@@ -124,15 +131,14 @@ export default function DataBaby(props) {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    flex: 0.27,
+    flex: 0.4,
     backgroundColor: '#330066',
-    maxHeight: 100,
+    maxHeight: 124,
     justifyContent: 'space-between',
   },
   subDiv: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   textLabe: {
     fontWeight: 'bold',
@@ -141,5 +147,20 @@ const styles = StyleSheet.create({
   },
   textData: {
     color: 'white',
+  },
+  componentView: {
+    width: '25%',
+    alignItems: 'center'
+  },
+  infoBaby: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    padding: 2,
+    borderColor: '#330066',
+    borderWidth: 1,
+    backgroundColor: "#7851a9"
   }
 })

@@ -28,12 +28,13 @@ export default function App() {
     milk: ""
   };
   const mask = {
-    name: "Aurora Alves Bueno",
-    age: "0",
-    weight: "2.500",
-    variation: "0.300",
-    heightBaby: "0.49"
-  };
+    name: "",
+    weight:"",
+    sex: "",
+    heightBaby: "",
+    birth:""
+  }
+
   useEffect(()=>{
     async function init(){
       try{

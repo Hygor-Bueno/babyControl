@@ -22,6 +22,15 @@ export function hourMask(hour) {
     return result;
 }
 
+export function weightMask(weight) {
+    if (weight.includes('.')) {
+        let value = weight.split('.');
+        return `${value.length > 0 ? `${value[0]},${value[1]}` : value[0]}`;
+    }else{
+        return weight;
+    }
+}
+
 export async function post(key, value) {
     let result;
     try {
@@ -29,7 +38,7 @@ export async function post(key, value) {
         await AsyncStorage.setItem(key, value);
 
     } catch (error) {
-        console.warn(error,key);
+        console.warn(error, key);
     }
 }
 export async function get(key) {

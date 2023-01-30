@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DatePicker from "react-native-date-picker";
 import Select from '../Select/Select';
-import { dateMask, dateMaskBr, get, hourMask, post } from '../Util';
+import { dateMaskBr, get, hourMask, post } from '../Util';
 export default function RegisterAlimentation(props) {
     const [dataFood, setDataFood] = useState(props.maskListFood);
     const [lastID, setLastID] = useState('0');
@@ -44,14 +44,21 @@ export default function RegisterAlimentation(props) {
             {buttonsInsert()}
             <View style={styles.viewList}>
                 <FlatList
-                    data={(listFood.list || [])}
+                    data={listFood.list}
                     keyExtractor={(item) => String(item.id)}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => {componentItem(item)}}
+                    renderItem={({ item }) => componentItem(item)}
                 />
             </View>
             <View style={styles.viewFooter}>
-                <TouchableOpacity onPress={() => insertInfo(date, hour)} style={{ width: 40, height: 40, borderRadius: 40 / 2, backgroundColor: '#330066', alignItems: 'center', justifyContent: 'center' }}>
+                <TouchableOpacity onPress={() => {
+                    if (parseFloat(milk) > 0 && milk != 0) {
+                        insertInfo(date, hour)
+                    } else {
+                        Alert.alert('Erro!', 'Os campos, Leite e Quantidade, são obrigatórios.')
+                    }
+                }
+                } style={{ width: 60, height: 60, borderRadius: 60 / 2, backgroundColor: '#330066', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 30, marginTop: 0, paddingTop: 0 }}>+</Text>
                 </TouchableOpacity>
             </View>
@@ -71,10 +78,16 @@ export default function RegisterAlimentation(props) {
         newList.list.push(newDataFood);
         await post("listFood", JSON.stringify(newList));
         setListFood({ ...newList });
-
-        console.log(newList);
+        clear();
     }
-
+    function clear() {
+        setDataFood(props.maskListFood);
+        setLastID('0');
+        // setListFood({ list: [] })
+        setDate(new Date())
+        setHour(new Date())
+        setMilk('0');
+    }
     function componentDate() {
         return (
             <DatePicker
@@ -114,11 +127,11 @@ export default function RegisterAlimentation(props) {
     function componentQuantity() {
         return (
             <TextInput
-                style={{width: 60, height: 30, backgroundColor: '#330066', borderRadius: 6,color: 'white',padding:0,textAlign: 'center'}}
-                onChangeText={(text)=>{
+                style={{ width: 60, height: 30, backgroundColor: '#330066', borderRadius: 6, color: 'white', padding: 0, textAlign: 'center' }}
+                onChangeText={(text) => {
                     let newDataFood = dataFood;
                     newDataFood.quantity = text;
-                    setDataFood({...newDataFood})
+                    setDataFood({ ...newDataFood })
                 }}
                 placeholder="0 ml"
                 keyboardType="numeric"
@@ -129,7 +142,14 @@ export default function RegisterAlimentation(props) {
     }
     function componentItem(item) {
         return (
-            <Text style={{color:'red'}}>{dateMaskBr(item.date)} - {hourMask(item.hour)}. Leite {filterMilk(item.milk)}</Text>
+            <View style={{}}>
+                <Text style={styles.textItem}>
+                    {dateMaskBr(item.date)} -
+                    {hourMask(item.hour)}.
+                    Leite {filterMilk(item.milk)} ,
+                    qtd {item.quantity ? item.quantity : 0} {parseFloat(item.quantity) >= 1 ? 'lts' : 'ml'}
+                </Text>
+            </View>
         )
     }
     function filterMilk(id_milk) {
@@ -161,7 +181,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#7851a9'
     },
     viewList: {
-        flex: 0.8,
+        flex: 1,
         backgroundColor: 'white',
         borderRadius: 8,
         padding: 4,
@@ -174,11 +194,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingBottom: 4,
         justifyContent: 'space-between',
-        marginTop:10
+        marginTop: 10
     },
     viewFooter: {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10
+    },
+    textItem: {
+        color: '#000',
+        fontSize: 16,
+        marginBottom: 8,
+        backgroundColor: '#E2A8FE',
+        padding:6,
+        borderRadius:8
     }
 })
