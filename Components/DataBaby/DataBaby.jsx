@@ -1,28 +1,14 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { maskWeight, weightMask } from '../Util';
-export default function DataBaby(props) {
-  const [data, setData] = useState(props.mask);
-
-  useEffect(() => {
-    async function init() {
-      try {
-        const dataBaby = await AsyncStorage.getItem('dataBaby');
-        setData(JSON.parse(dataBaby));
-        console.log(dataBaby);
-      } catch (e) {
-        console.warn(e)
-      }
-    }
-    init();
-  }, [setData]);
-  useEffect(() => console.log(data), [data]);
+import { dateMask, maskWeight, weightMask } from '../Util';
+export default function DataBaby(props) {  
+  const data = props.mask
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         {componentName()}
-        <TouchableOpacity onPress={() => { console.log("HIHIHIHI") }} style={{ backgroundColor: "#7851a9", alignItems: 'center', justifyContent: 'center', height: 30, width: 30, borderRadius: 15 }}>
+        <TouchableOpacity onPress={() => { props.setRegister(true) }} style={{ backgroundColor: "#7851a9", alignItems: 'center', justifyContent: 'center', height: 30, width: 30, borderRadius: 15 }}>
           <Image source={require('../../Assets/Image/settings.png')} style={{ height: 28, width: 28 }} />
         </TouchableOpacity>
       </View>
@@ -49,7 +35,7 @@ export default function DataBaby(props) {
     return (
       <View style={{ width: '60%', padding: 2 }}>
         <Text style={styles.textLabe}>Nome:</Text>
-        <Text style={styles.textData}>{data ? data.name : ""}</Text>
+        <Text style={styles.textData}>{data.name ? data.name : ""}</Text>
       </View>
     );
   }
@@ -57,7 +43,7 @@ export default function DataBaby(props) {
     return (
       <View style={styles.componentView}>
         <View style={styles.infoBaby}>
-          <Text style={styles.textData}>{data ? Age(data.birth) : ""}</Text>
+          <Text style={styles.textData}>{data.birth ? Age(data.birth) : ""}</Text>
         </View >
         <Text style={styles.textLabe}>Idade:</Text>
       </View>
@@ -67,7 +53,7 @@ export default function DataBaby(props) {
     return (
       <View style={styles.componentView}>
         <View style={styles.infoBaby}>
-          <Text style={styles.textData}>{data ? weightMask(data.weight) : ""}</Text>
+          <Text style={styles.textData}>{data.weight ? weightMask(data.weight) : ""}</Text>
         </View >
         <Text style={styles.textLabe}>Peso (Kg):</Text>
       </View>
@@ -77,7 +63,7 @@ export default function DataBaby(props) {
     return (
       <View style={styles.componentView}>
         <View style={styles.infoBaby}>
-          <Text style={{ ...styles.textData, fontSize: 18 }}>{data ? data.sex : ""}</Text>
+          <Text style={{ ...styles.textData, fontSize: 18 }}>{data.sex ? data.sex : ""}</Text>
         </View >
         <Text style={styles.textLabe}>Sexo:</Text>
       </View>
@@ -87,7 +73,7 @@ export default function DataBaby(props) {
     return (
       <View style={styles.componentView}>
         <View style={styles.infoBaby}>
-          <Text style={styles.textData}>{data ? data.heightBaby : ""}</Text>
+          <Text style={styles.textData}>{data.heightBaby ? data.heightBaby : ""}</Text>
         </View >
         <Text style={styles.textLabe}>Altura:</Text>
       </View>
